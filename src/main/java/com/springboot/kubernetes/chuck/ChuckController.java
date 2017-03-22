@@ -1,6 +1,7 @@
 package com.springboot.kubernetes.chuck;
 
 import java.lang.invoke.MethodHandles;
+import java.net.InetAddress;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ChuckController {
+
+	private int counter;
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -46,6 +49,31 @@ public class ChuckController {
 	public @ResponseBody ChuckFact greeting() {
 		log.debug("Got a request!");
 		return chuckFactClient.randomFact();
+	}
+
+	@RequestMapping("/ip")
+	public IPAddress ipaddress() throws Exception {
+		return new IPAddress(++counter, InetAddress.getLocalHost().getHostAddress());
+	}
+
+}
+
+class IPAddress {
+	private final long id;
+	private final String ipAddress;
+
+	public IPAddress(long id, String ipAddress) {
+		super();
+		this.id = id;
+		this.ipAddress = ipAddress;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
 	}
 
 }
